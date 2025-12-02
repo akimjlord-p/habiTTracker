@@ -9,8 +9,9 @@ enum Command {
     New(Vec<String>),
     Complete(HabitPointer),
     Analytics(HabitPointer),
+    Delete(HabitPointer),
     List,
-    Quit,
+    Quit
 }
 
 
@@ -23,14 +24,12 @@ impl Command {
         match words[0] {
             "new" => {
                 if words.len() != 3 {
-                    let n_arguments = words.len() - 1;
                     return Err(format!("Expected 2 arguments, get {}", (words.len() - 1)).to_string())
                 }
                 Ok(Command::New(vec![words[1].to_string(), words[2].to_string()]))
             }
             "complete" => {
                 if words.len() != 2 {
-                    let n_arguments = words.len() - 1;
                     return Err(format!("Expected 1 argument, get {}", (words.len() - 1)).to_string())
                 }
                 let habit: Result<i64, _> = words[1].parse();
@@ -39,7 +38,33 @@ impl Command {
                     Err(_) => Ok(Command::Complete(HabitPointer::Name((words[1].to_string()))))
                 }
             },
-            _ => todo!()
+            "delete" => {
+                if words.len() != 2 {
+                    return Err(format!("Expected 1 argument, get {}", (words.len() - 1)).to_string())
+                }
+                let habit: Result<i64, _> = words[1].parse();
+                match habit {
+                    Ok(habit_number)  => Ok(Command::Delete(HabitPointer::Number(habit_number))),
+                    Err(_) => Ok(Command::Delete(HabitPointer::Name(words[1].to_string())))
+                }
+            },
+            "analytics" => {
+                if words.len() != 2 {
+                    return Err(format!("Expected 1 argument, get {}", (words.len() - 1)).to_string())
+                }
+                let habit: Result<i64, _> = words[1].parse();
+                match habit {
+                    Ok(habit_number)  => Ok(Command::Analytics(HabitPointer::Number(habit_number))),
+                    Err(_) => Ok(Command::Analytics(HabitPointer::Name(words[1].to_string())))
+                }
+            },
+            "list" => {
+                Ok(Command::List)
+            }
+            "quit" => {
+                Ok(Command::Quit)
+            }
+            _ => Err("Unexpected command".to_string())
         }
     }
 }
