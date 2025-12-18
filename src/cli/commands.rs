@@ -1,4 +1,6 @@
 use crate::service::utils::{HabitData, HabitPointer};
+use thiserror;
+
 
 pub enum Command {
     New(HabitData),
