@@ -80,7 +80,7 @@ impl CLi{
 
 
     pub fn initiate() -> Self{
-        let storage = Storage::generate();
+        let storage = Storage::generate().unwrap();
         Self { storage, running: false }
     }
 

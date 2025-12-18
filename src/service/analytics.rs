@@ -1,6 +1,6 @@
-use crate::service::habit::Habit;
+use super::habit::Habit;
 use chrono::{Duration, Local, NaiveDateTime};
-use crate::service::utils::is_in_range;
+use super::utils::is_in_range;
 
 
 pub fn num_of_completions(habit: &Habit, start: &NaiveDateTime, end: &NaiveDateTime) -> i64{
